@@ -1,15 +1,25 @@
 import "./deps/IERC20.sol";
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.10;
 
 contract Dot is IERC20 {
-
     // 'State' variable definitions
     uint256 private _supply;
 
     // 'Storage' variable definitions
     mapping(address => uint256) private _balances;
     mapping(address => (address=> uint256)) private _allowances;
+
+    // Initialization
+    constructor (uint256 supply) {
+        _supply = supply;
+        _balances[msg.sender] = _supply;
+    }
+
+    // View contract/token name
+    function name() external view returns (string memory) {
+        return "Dot";
+    }
 
     // Return total amount of tokens in supply
     function totalSupply() external view returns (uint256) {
@@ -65,7 +75,7 @@ contract Dot is IERC20 {
         _balances[from] -= amount;
         _balances[to] += amount;
 
-        emit Transfer(from, to, amount)
+        emit Transfer(from, to, amount);
 
         return true;
     }
